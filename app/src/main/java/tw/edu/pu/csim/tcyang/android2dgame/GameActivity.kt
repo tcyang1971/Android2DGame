@@ -1,11 +1,11 @@
 package tw.edu.pu.csim.tcyang.android2dgame
 
 import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.WindowInsets
 import android.view.WindowInsetsController
 import android.view.WindowManager
+import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_game.*
 
 class GameActivity : AppCompatActivity() {
@@ -14,6 +14,8 @@ class GameActivity : AppCompatActivity() {
         setContentView(R.layout.activity_game)
 
         SetFullScreen()  //設定全螢幕
+
+
     }
 
     fun SetFullScreen(){
@@ -41,6 +43,7 @@ class GameActivity : AppCompatActivity() {
     override fun onPause() {
         super.onPause()
         mygv.thread.running = false
+        finish()  //如果中斷，下次再繼續則跳回主畫面重玩
     }
 
     override fun onResume() {
