@@ -6,4 +6,9 @@
     android:layout_height="match_parent"
     tools:context=".GameActivity">
 
+    <tw.edu.pu.csim.tcyang.android2dgame.GameView
+        android:id="@+id/mygv"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
