@@ -17,8 +17,12 @@ class GameView(context: Context?, attrs: AttributeSet?) : SurfaceView(context, a
 
     var background1:Background? = null
 
+    var countDown:Int = 200
+    var thread: GameThread
+
     init {
         holder.addCallback(this)
+        thread = GameThread(holder, this)
     }
 
     override fun draw(canvas: Canvas) {
@@ -29,6 +33,7 @@ class GameView(context: Context?, attrs: AttributeSet?) : SurfaceView(context, a
         paint.textSize = 50f
         canvas.drawText("螢幕解析度 : " +  screenWidth.toString()  + " * "
                 + screenHeight.toString() , 400f,400f, paint)
+        canvas.drawText("倒數計時:" + countDown.toString(), 200f,200f, paint)
     }
 
     override fun surfaceCreated(p0: SurfaceHolder) {
@@ -36,6 +41,9 @@ class GameView(context: Context?, attrs: AttributeSet?) : SurfaceView(context, a
         var canvas:Canvas = holder.lockCanvas()
             draw(canvas)
         holder.unlockCanvasAndPost(canvas)
+
+        thread.running = true
+        thread.start()  //開始Thread
     }
 
     override fun surfaceChanged(p0: SurfaceHolder, p1: Int, p2: Int, p3: Int) {
@@ -44,5 +52,13 @@ class GameView(context: Context?, attrs: AttributeSet?) : SurfaceView(context, a
 
     override fun surfaceDestroyed(p0: SurfaceHolder) {
 
+    }
+
+    fun update() {
+        countDown--
+        if (countDown<=0) {
+            countDown = 0
+            thread.running = false  //停止Thread
+        }
     }
 }

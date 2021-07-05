@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.WindowInsets
 import android.view.WindowInsetsController
 import android.view.WindowManager
+import kotlinx.android.synthetic.main.activity_game.*
 
 class GameActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -35,4 +36,17 @@ class GameActivity : AppCompatActivity() {
         //不要自動休眠
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
     }
+
+
+    override fun onPause() {
+        super.onPause()
+        mygv.thread.running = false
+    }
+
+    override fun onResume() {
+        super.onResume()
+        mygv.thread.running = true
+    }
+
+
 }
