@@ -22,23 +22,11 @@ class GameView(context: Context?, attrs: AttributeSet?) : SurfaceView(context, a
     //var countDown:Int = 200
     var thread: GameThread
 
+    var boy:Boy? = null
+
     init {
         holder.addCallback(this)
         thread = GameThread(holder, this)
-    }
-
-    override fun draw(canvas: Canvas) {
-        super.draw(canvas)
-        background1!!.draw(canvas)
-        background2!!.draw(canvas)
-
-        paint.color = Color.WHITE
-        paint.textSize = 50f
-        /*
-        canvas.drawText("螢幕解析度 : " +  screenWidth.toString()  + " * "
-                + screenHeight.toString() , 400f,400f, paint)
-        canvas.drawText("倒數計時:" + countDown.toString(), 200f,200f, paint)
-        */
     }
 
     override fun surfaceCreated(p0: SurfaceHolder) {
@@ -46,6 +34,9 @@ class GameView(context: Context?, attrs: AttributeSet?) : SurfaceView(context, a
         background2 = Background(BitmapFactory.decodeResource(resources, R.drawable.forest))
         background2!!.x = background1!!.x + screenWidth
 
+
+        boy = Boy(context, resources,
+                BitmapFactory.decodeResource(resources, R.drawable.boy1))
         /*
         var canvas:Canvas = holder.lockCanvas()
             draw(canvas)
@@ -84,5 +75,24 @@ class GameView(context: Context?, attrs: AttributeSet?) : SurfaceView(context, a
         if (background2!!.x + background2!!.image.getWidth() < 0) {
             background2!!.x = background1!!.x + screenWidth
         }
+
+        boy!!.update()
+    }
+
+
+    override fun draw(canvas: Canvas) {
+        super.draw(canvas)
+        background1!!.draw(canvas)
+        background2!!.draw(canvas)
+
+        boy!!.draw(canvas)
+
+        paint.color = Color.WHITE
+        paint.textSize = 50f
+        /*
+        canvas.drawText("螢幕解析度 : " +  screenWidth.toString()  + " * "
+                + screenHeight.toString() , 400f,400f, paint)
+        canvas.drawText("倒數計時:" + countDown.toString(), 200f,200f, paint)
+        */
     }
 }

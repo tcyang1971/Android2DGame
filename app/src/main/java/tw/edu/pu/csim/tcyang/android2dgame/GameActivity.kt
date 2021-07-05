@@ -14,8 +14,6 @@ class GameActivity : AppCompatActivity() {
         setContentView(R.layout.activity_game)
 
         SetFullScreen()  //設定全螢幕
-
-
     }
 
     fun SetFullScreen(){
