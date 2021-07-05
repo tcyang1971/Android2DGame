@@ -2,11 +2,9 @@ package tw.edu.pu.csim.tcyang.android2dgame
 
 import android.content.Context
 import android.content.res.Resources
-import android.graphics.BitmapFactory
-import android.graphics.Canvas
-import android.graphics.Color
-import android.graphics.Paint
+import android.graphics.*
 import android.util.AttributeSet
+import android.view.MotionEvent
 import android.view.SurfaceHolder
 import android.view.SurfaceView
 
@@ -94,5 +92,19 @@ class GameView(context: Context?, attrs: AttributeSet?) : SurfaceView(context, a
                 + screenHeight.toString() , 400f,400f, paint)
         canvas.drawText("倒數計時:" + countDown.toString(), 200f,200f, paint)
         */
+    }
+
+    override fun onTouchEvent(event: MotionEvent): Boolean {
+        var boyRect: Rect = boy!!.getRect()  //讀取男孩圖形區域
+
+        if (boyRect.contains(event.getX().toInt(), event.getY().toInt())) {
+            boy!!.Jump("UP",false)  //按到小男孩，往上跳躍30像素，並往右移動20像素
+        }
+        else{
+            if (event.action == MotionEvent.ACTION_DOWN) {
+                boy!!.Jump("DOWN",false)  //按到其他區域，小男孩往下跳躍30像素，並往右移動20像素
+            }
+        }
+        return true
     }
 }

@@ -48,4 +48,24 @@ class Boy(var context: Context?, var res: Resources, var image : Bitmap) {
         canvas.drawBitmap(image, SrcRect, DestRect, null)
     }
 
+    fun getRect():Rect{
+        //取得圖形範圍 (內縮10像素，比較不會太敏感)
+        return Rect(x+10, y+10,x+w-10, y+h-10)
+    }
+
+    fun Jump(action:String, sensor:Boolean){
+        if (action == "UP") {
+            y -= 30
+            if (y < 0) { y = 0 }
+        }
+        else if  (action == "DOWN") {
+            y += 30
+            if (y > screenHeight - h) { y = screenHeight - h }
+        }
+
+        if (!sensor){
+            x += 20
+        }
+    }
+
 }
