@@ -16,8 +16,10 @@ class GameView(context: Context?, attrs: AttributeSet?) : SurfaceView(context, a
     val screenHeight = Resources.getSystem().displayMetrics.heightPixels  //讀取螢幕高度
 
     var background1:Background? = null
+    var background2:Background? = null
+    var backgroundMoveX = 5
 
-    var countDown:Int = 200
+    //var countDown:Int = 200
     var thread: GameThread
 
     init {
@@ -28,19 +30,27 @@ class GameView(context: Context?, attrs: AttributeSet?) : SurfaceView(context, a
     override fun draw(canvas: Canvas) {
         super.draw(canvas)
         background1!!.draw(canvas)
+        background2!!.draw(canvas)
 
         paint.color = Color.WHITE
         paint.textSize = 50f
+        /*
         canvas.drawText("螢幕解析度 : " +  screenWidth.toString()  + " * "
                 + screenHeight.toString() , 400f,400f, paint)
         canvas.drawText("倒數計時:" + countDown.toString(), 200f,200f, paint)
+        */
     }
 
     override fun surfaceCreated(p0: SurfaceHolder) {
         background1 = Background(BitmapFactory.decodeResource(resources, R.drawable.forest))
+        background2 = Background(BitmapFactory.decodeResource(resources, R.drawable.forest))
+        background2!!.x = background1!!.x + screenWidth
+
+        /*
         var canvas:Canvas = holder.lockCanvas()
             draw(canvas)
         holder.unlockCanvasAndPost(canvas)
+         */
 
         thread.running = true
         thread.start()  //開始Thread
@@ -55,10 +65,24 @@ class GameView(context: Context?, attrs: AttributeSet?) : SurfaceView(context, a
     }
 
     fun update() {
+        /*
         countDown--
         if (countDown<=0) {
             countDown = 0
             thread.running = false  //停止Thread
+        }
+        */
+
+        //捲動背景處理
+        background1!!.x -= backgroundMoveX
+        background2!!.x -= backgroundMoveX
+
+        if (background1!!.x + background1!!.image.getWidth() < 0) {
+            background1!!.x = background2!!.x + screenWidth
+        }
+
+        if (background2!!.x + background2!!.image.getWidth() < 0) {
+            background2!!.x = background1!!.x + screenWidth
         }
     }
 }
