@@ -23,6 +23,8 @@ class GameView(context: Context?, attrs: AttributeSet?) : SurfaceView(context, a
 
     override fun draw(canvas: Canvas) {
         super.draw(canvas)
+        background1!!.draw(canvas)
+
         paint.color = Color.WHITE
         paint.textSize = 50f
         canvas.drawText("螢幕解析度 : " +  screenWidth.toString()  + " * "
@@ -32,8 +34,7 @@ class GameView(context: Context?, attrs: AttributeSet?) : SurfaceView(context, a
     override fun surfaceCreated(p0: SurfaceHolder) {
         background1 = Background(BitmapFactory.decodeResource(resources, R.drawable.forest))
         var canvas:Canvas = holder.lockCanvas()
-            //draw(canvas)
-            background1!!.draw(canvas)
+            draw(canvas)
         holder.unlockCanvasAndPost(canvas)
     }
 
