@@ -57,6 +57,10 @@ class GameActivity : AppCompatActivity(), SensorEventListener {
         mygv.thread.running = false
         finish()  //如果中斷，下次再繼續則跳回主畫面重玩
         sm.unregisterListener(this)
+
+        if (mygv.mper != null){
+            mygv.mper.reset()
+        }
     }
 
     override fun onResume() {
@@ -85,4 +89,5 @@ class GameActivity : AppCompatActivity(), SensorEventListener {
         startActivity(intent)
         finish()
     }
+
 }

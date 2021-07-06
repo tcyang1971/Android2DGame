@@ -1,6 +1,5 @@
 package tw.edu.pu.csim.tcyang.android2dgame
 
-
 import android.app.AlertDialog
 import android.content.DialogInterface
 import android.content.Intent
