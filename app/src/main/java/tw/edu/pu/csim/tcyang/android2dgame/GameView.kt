@@ -22,6 +22,7 @@ class GameView(context: Context?, attrs: AttributeSet?) : SurfaceView(context, a
 
     var boy:Boy? = null
     var virus:Virus? = null
+    var Score : Int = 0  //分數
 
     init {
         holder.addCallback(this)
@@ -79,6 +80,12 @@ class GameView(context: Context?, attrs: AttributeSet?) : SurfaceView(context, a
 
         boy!!.update()
         virus!!.update()
+
+        //判斷病毒是否到達邊界
+        if (virus!!.ReachEdge()){
+            Score++
+            boy!!.x += 20
+        }
     }
 
 
@@ -89,9 +96,15 @@ class GameView(context: Context?, attrs: AttributeSet?) : SurfaceView(context, a
 
         boy!!.draw(canvas)
         virus!!.draw(canvas)
-
+        
         paint.color = Color.WHITE
         paint.textSize = 50f
+        canvas.drawText("分數：" + Score.toString() + "分", 50f, 50f, paint)
+
+        //半透明背景
+        paint.setARGB(5, 0, 0,0)
+        canvas.drawRect(0f,0f, screenWidth.toFloat(),80f, paint)
+
         /*
         canvas.drawText("螢幕解析度 : " +  screenWidth.toString()  + " * "
                 + screenHeight.toString() , 400f,400f, paint)

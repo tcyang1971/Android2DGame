@@ -60,4 +60,16 @@ class Virus (var context: Context?, var res: Resources, var image : Bitmap) {
         //取得圖形範圍 (內縮10像素，比較不會太敏感)
         return Rect(x+10, y+10,x+w-10, y+h-10)
     }
+
+    //判斷病毒是否到達右邊或上下邊界
+    fun ReachEdge():Boolean{
+        if (x <= 0 || y <= 0 || y >= screenHeight-h) {
+            x =  screenWidth-w
+            y = rnd.nextInt(screenHeight-h)
+            return true
+        }
+        else{
+            return false
+        }
+    }
 }
