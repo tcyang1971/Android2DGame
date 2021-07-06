@@ -1,5 +1,9 @@
 package tw.edu.pu.csim.tcyang.android2dgame
 
+
+import android.app.AlertDialog
+import android.content.DialogInterface
+import android.content.Intent
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -7,12 +11,37 @@ import android.view.WindowInsets
 import android.view.WindowInsetsController
 import android.view.WindowManager
 
-class OverActivity : AppCompatActivity() {
+import kotlinx.android.synthetic.main.activity_game.*
+
+class OverActivity : AppCompatActivity(), DialogInterface.OnClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_over)
 
         SetFullScreen()  //設定全螢幕
+
+        var Score:Int = intent.getIntExtra("分數" ,0)
+        AlertDialog.Builder(this)
+                .setTitle("遊戲結束")
+                .setMessage("您此次的成績為：" + Score.toString() + "分，還想再玩一次嗎？")
+                .setIcon(R.drawable.virus1)
+                .setCancelable(false)  //按對話框外面，不會關閉對話框
+
+                .setPositiveButton("當然要囉",this)
+                .setNegativeButton("結束再見",this)
+                .show()
+    }
+
+
+    override fun onClick(p0: DialogInterface?, p1: Int) {
+        if (p1 == DialogInterface.BUTTON_POSITIVE){
+            intent = Intent(this@OverActivity, GameActivity::class.java)
+            startActivity(intent)
+            finish()
+        }
+        else if (p1 == DialogInterface.BUTTON_NEGATIVE){
+            finish()
+        }
     }
 
     fun SetFullScreen(){
@@ -35,4 +64,5 @@ class OverActivity : AppCompatActivity() {
         //不要自動休眠
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
     }
+
 }

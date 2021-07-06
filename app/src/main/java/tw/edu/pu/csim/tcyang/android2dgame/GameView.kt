@@ -81,6 +81,15 @@ class GameView(context: Context?, attrs: AttributeSet?) : SurfaceView(context, a
         boy!!.update()
         virus!!.update()
 
+        //判斷是否碰撞或男孩到達右邊邊界，結束遊戲
+        if(boy!!.getRect().intersect(virus!!.getRect()) || (boy!!.x >= (screenWidth - boy!!.w)) ) {
+            thread.running = false
+
+            //呼叫GameActivity的GameOver方法
+            var gameActivity:GameActivity = context as GameActivity
+            gameActivity.GameOver()
+        }
+
         //判斷病毒是否到達邊界
         if (virus!!.ReachEdge()){
             Score++
@@ -96,7 +105,7 @@ class GameView(context: Context?, attrs: AttributeSet?) : SurfaceView(context, a
 
         boy!!.draw(canvas)
         virus!!.draw(canvas)
-        
+
         paint.color = Color.WHITE
         paint.textSize = 50f
         canvas.drawText("分數：" + Score.toString() + "分", 50f, 50f, paint)

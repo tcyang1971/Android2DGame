@@ -1,6 +1,7 @@
 package tw.edu.pu.csim.tcyang.android2dgame
 
 import android.content.Context
+import android.content.Intent
 import android.hardware.Sensor
 import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
@@ -78,5 +79,10 @@ class GameActivity : AppCompatActivity(), SensorEventListener {
 
     }
 
-
+    fun GameOver() {
+        val intent = Intent(this, OverActivity::class.java)
+        intent.putExtra("分數", mygv.Score)
+        startActivity(intent)
+        finish()
+    }
 }
