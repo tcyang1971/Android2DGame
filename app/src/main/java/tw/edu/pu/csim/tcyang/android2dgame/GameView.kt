@@ -21,6 +21,7 @@ class GameView(context: Context?, attrs: AttributeSet?) : SurfaceView(context, a
     var thread: GameThread
 
     var boy:Boy? = null
+    var virus:Virus? = null
 
     init {
         holder.addCallback(this)
@@ -35,6 +36,8 @@ class GameView(context: Context?, attrs: AttributeSet?) : SurfaceView(context, a
 
         boy = Boy(context, resources,
                 BitmapFactory.decodeResource(resources, R.drawable.boy1))
+        virus = Virus(context, resources,
+                BitmapFactory.decodeResource(resources, R.drawable.virus1))
         /*
         var canvas:Canvas = holder.lockCanvas()
             draw(canvas)
@@ -75,6 +78,7 @@ class GameView(context: Context?, attrs: AttributeSet?) : SurfaceView(context, a
         }
 
         boy!!.update()
+        virus!!.update()
     }
 
 
@@ -84,6 +88,7 @@ class GameView(context: Context?, attrs: AttributeSet?) : SurfaceView(context, a
         background2!!.draw(canvas)
 
         boy!!.draw(canvas)
+        virus!!.draw(canvas)
 
         paint.color = Color.WHITE
         paint.textSize = 50f
@@ -100,11 +105,24 @@ class GameView(context: Context?, attrs: AttributeSet?) : SurfaceView(context, a
         if (boyRect.contains(event.getX().toInt(), event.getY().toInt())) {
             boy!!.Jump("UP",false)  //按到小男孩，往上跳躍30像素，並往右移動20像素
         }
-        else{
-            if (event.action == MotionEvent.ACTION_DOWN) {
-                boy!!.Jump("DOWN",false)  //按到其他區域，小男孩往下跳躍30像素，並往右移動20像素
+
+        else if (virus!!.getRect().contains(event.getX().toInt(), event.getY().toInt())) {
+            //往右拖曳病毒
+            if (event.action == MotionEvent.ACTION_MOVE){
+                if (virus!!.x < event.getX() - virus!!.w / 2) {
+                    virus!!.x=event.getX().toInt() - virus!!.w / 2
+                    virus!!.y=event.getY().toInt() - virus!!.h / 2
+                }
             }
+            else if (event.action == MotionEvent.ACTION_UP){
+                boy!!.x += 30
+            }
+        }
+
+        else if (event.action == MotionEvent.ACTION_DOWN) {
+            boy!!.Jump("DOWN",false)  //按到其他區域，小男孩往下跳躍30像素，並往右移動20像素
         }
         return true
     }
+
 }
