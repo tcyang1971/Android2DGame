@@ -9,7 +9,7 @@ import android.view.MotionEvent
 import android.view.SurfaceHolder
 import android.view.SurfaceView
 
-class GameView(context: Context?, attrs: AttributeSet?) : SurfaceView(context, attrs), SurfaceHolder.Callback{
+class GameView(context: Context?) : SurfaceView(context), SurfaceHolder.Callback{
     var paint = Paint(Paint.ANTI_ALIAS_FLAG)
     val screenWidth= Resources.getSystem().displayMetrics.widthPixels  //讀取螢幕寬度
     val screenHeight = Resources.getSystem().displayMetrics.heightPixels  //讀取螢幕高度
@@ -24,9 +24,6 @@ class GameView(context: Context?, attrs: AttributeSet?) : SurfaceView(context, a
     var boy:Boy? = null
     var virus:Virus? = null
     var Score : Int = 0  //分數
-
-    //音效
-    lateinit var mper: MediaPlayer
 
     init {
         holder.addCallback(this)
@@ -51,12 +48,6 @@ class GameView(context: Context?, attrs: AttributeSet?) : SurfaceView(context, a
 
         thread.running = true
         thread.start()  //開始Thread
-
-        //遊戲背景音效
-        mper = MediaPlayer()
-        mper = MediaPlayer.create(context, R.raw.background)
-        mper.setLooping(true)
-        mper.start()
     }
 
     override fun surfaceChanged(p0: SurfaceHolder, p1: Int, p2: Int, p3: Int) {
@@ -98,12 +89,6 @@ class GameView(context: Context?, attrs: AttributeSet?) : SurfaceView(context, a
             //呼叫GameActivity的GameOver方法
             var gameActivity:GameActivity = context as GameActivity
             gameActivity.GameOver()
-
-            //遊戲結束之音效
-            mper.reset()
-            mper = MediaPlayer.create(context, R.raw.gameover)
-            mper.setLooping(false)
-            mper.start()
         }
 
         //判斷病毒是否到達邊界

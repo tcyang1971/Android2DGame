@@ -6,6 +6,7 @@ import android.hardware.Sensor
 import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
 import android.hardware.SensorManager
+import android.media.MediaPlayer
 import android.os.Build
 import android.os.Bundle
 import android.view.WindowInsets
@@ -18,6 +19,10 @@ class GameActivity : AppCompatActivity(), SensorEventListener {
 
     lateinit var sm : SensorManager
     lateinit var sr : Sensor
+    lateinit var mygv : GameView
+
+    //音效
+    //lateinit var mper: MediaPlayer
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,6 +33,18 @@ class GameActivity : AppCompatActivity(), SensorEventListener {
         sm = getSystemService(Context.SENSOR_SERVICE) as SensorManager
         sr = sm.getDefaultSensor(Sensor.TYPE_ACCELEROMETER)
         sm.registerListener(this, sr, SensorManager.SENSOR_DELAY_NORMAL)
+
+        mygv = GameView(this)
+        mylayout.addView(mygv)
+
+        /*
+        //遊戲背景音效
+        mper = MediaPlayer()
+        mper = MediaPlayer.create(this, R.raw.background)
+        mper.setLooping(true)
+        mper.start()
+
+         */
     }
 
     fun SetFullScreen(){
@@ -55,18 +72,36 @@ class GameActivity : AppCompatActivity(), SensorEventListener {
     override fun onPause() {
         super.onPause()
         mygv.thread.running = false
-        finish()  //如果中斷，下次再繼續則跳回主畫面重玩
+
+        //finish()  //如果中斷，下次再繼續則跳回主畫面重玩
+        mylayout.removeView(mygv)
+
         sm.unregisterListener(this)
 
-        if (mygv.mper != null){
-            mygv.mper.reset()
+        /*
+        if(mper != null && mper.isPlaying()){
+            mper.pause()
         }
+        else{
+            mper.reset()
+        }
+         */
     }
 
     override fun onResume() {
         super.onResume()
-        mygv.thread.running = true
+        mygv = GameView(this)
+        mylayout.addView(mygv)
+        //mygv.thread.running = true
+
         sm.registerListener(this, sr, SensorManager.SENSOR_DELAY_NORMAL)
+
+        /*
+        if(mper != null){
+            mper.start()
+        }
+
+         */
     }
 
     override fun onSensorChanged(event: SensorEvent) {
